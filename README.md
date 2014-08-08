@@ -19,16 +19,16 @@ The tests for R=1, 4, 6 (rate = 7/8, 1/2, 1/4) were made for length 1000 byte en
 
 <table>
   <tr>
-    <th>rate 7/8</th><th>p=0.001</th><th>0.003</th><th>0.005</th><th>0.007</th><th>0.008</th><th>0.009</th><th>0.01</th><th>0.011</th><th>0.012</th><th>~0.016</th>
+    <th>rate 7/8</th><th>p=0.001</th><th>0.003</th><th>0.005</th><th>0.007</th><th>0.009</th><th>0.011</th><th>0.012</th><th>0.013</th><th>0.014</th><th>~0.015</th>
   </tr>
   <tr>
-    <th> c </th><th>8.85</th><th>1.54</th><th>0.65</th><th>0.346</th><th>0.299</th><th>0.245</th><th>0.180</th><th>0.138</th><th>0.114</th><th>0</th>
+    <th> c </th><th>8.85</th><th>1.54</th><th>0.65</th><th>0.346</th><th>0.245</th><th>0.138</th><th>0.114</th><th>0.071</th><th>0.030</th><th>0</th>
   </tr>
   <tr>
-    <th> damaged </th><th>0</th><th>0</th><th>1</th><th>32</th><th>66</th><th>128</th><th>256</th><th>425</th><th>595</th><th>-</th>
+    <th> damaged </th><th>0</th><th>0</th><th>1</th><th>32</th><th>128</th><th>425</th><th>595</th><th>753</th><th>882</th><th>-</th>
   </tr>
   <tr>
-    <th> nodes </th><th>1.23</th><th>10.5</th><th>235</th><th>2355</th><th>4989</th><th>9602</th><th>16939</th><th>25099</th><th>33823</th><th>-</th>
+    <th> nodes </th><th>1.23</th><th>10.5</th><th>235</th><th>2355</th><th>9602</th><th>25099</th><th>33823</th><th>40992</th><th>46054</th><th>-</th>
   </tr>
   <tr>
    <th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th>
@@ -62,6 +62,18 @@ The tests for R=1, 4, 6 (rate = 7/8, 1/2, 1/4) were made for length 1000 byte en
   </tr>
   <tr>
    <th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th>
+  </tr>
+   <tr>
+    <th>rate 1/8</th><th>p=0.1</th><th>0.11</th><th>0.12</th><th>0.14</th><th>0.16</th><th>0.18</th><th>0.20</th><th>0.22</th><th>0.24</th><th>?</th>
+  </tr>
+  <tr>
+    <th> c </th><th>2.23</th><th>2.00</th><th>1.67</th><th>1.04</th><th>0.776</th><th>0.690</th><th>0.623</th><th>0.482</th><th>0.432</th><th>0</th>
+  </tr>
+  <tr>
+    <th> damaged </th><th>0</th><th>0</th><th>0</th><th>1</th><th>3</th><th>4</th><th>21</th><th>52</th><th>131</th><th>-</th>
+  </tr>
+  <tr>
+    <th> nodes </th><th>2.30</th><th>3.11</th><th>4.65</th><th>70.4</th><th>211</th><th>449</th><th>1891</th><th>5182</th><th>12279</th><th>-</th>
   </tr>
 </table>
 
