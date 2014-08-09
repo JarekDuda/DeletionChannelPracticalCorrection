@@ -15,7 +15,7 @@ The statistical behavior of such random tree is well described by Pareto coeffic
 
 It is argued that standard codebooks are not optimal for deletion channel, especially that they cannot work for p>1/2, while there is known (1-p)/9 universal lower rate bound ([survey paper](http://www.eecs.harvard.edu/~michaelm/TALKS/DelSurvey.pdf)). So roughtly extrapolated c=0 positions should be rather seen as lower bounds for low deletion probabilities here. For large deletion probability there are used codes with long sequences of the same value (0 or 1). However, in practical applications, deletions are rather low probable and appear alongside other types of damages like bit-flips, which would damage the block structure. In contrast, other types of errors can be easily added to the presented approach as just different types of branches with corresponding probabilities.
 
-The tests for R=1, 4, 6 (rate = 7/8, 1/2, 1/4) were made for length 1000 byte encoded sequences (frames), with 5*10^7 node limit. 1000 frames were tested for each case. "damaged" is the number of improperly corrected frames out of 1000. "nodes" is the average number of created tree nodes per encoded byte - linear coefficient for time and memory cost (1 if error-free). Pareto coefficient (c) was estimated by linear fit to the central data ([1/3,2/3]). The last column contains roughtly extrapolated c=0 probability:
+The tests for R=1, 4, 6, 7 (rate = 7/8, 1/2, 1/4, 1/8) were made for length 1000 byte encoded sequences (frames), with 5*10^7 node limit. 1000 frames were tested for each case. "damaged" is the number of improperly corrected frames out of 1000. "nodes" is the average number of created tree nodes per encoded byte - linear coefficient for time and memory cost (1 if error-free). Pareto coefficient (c) was estimated by linear fit to the central data ([1/3,2/3]). The last column contains roughtly extrapolated c=0 probability:
 
 <table>
   <tr>
@@ -64,16 +64,17 @@ The tests for R=1, 4, 6 (rate = 7/8, 1/2, 1/4) were made for length 1000 byte en
    <th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th>
   </tr>
    <tr>
-    <th>rate 1/8</th><th>p=0.1</th><th>0.11</th><th>0.12</th><th>0.14</th><th>0.16</th><th>0.18</th><th>0.20</th><th>0.22</th><th>0.24</th><th>?</th>
+    <th>rate 1/8</th><th>p=0.1</th><th>0.12</th><th>0.14</th><th>0.16</th><th>0.18</th><th>0.20</th><th>0.22</th><th>0.24</th><th>0.26</th><th>?</th>
   </tr>
   <tr>
-    <th> c </th><th>2.23</th><th>2.00</th><th>1.67</th><th>1.04</th><th>0.776</th><th>0.690</th><th>0.623</th><th>0.482</th><th>0.432</th><th>0</th>
+    <th> c </th><th>35.8</th><th>23.7</th><th>15.7</th><th>8.70</th><th>5.51</th><th>3.26</th><th>1.77</th><th>0.87</th>
+    <th></th><th>0</th>
   </tr>
   <tr>
-    <th> damaged </th><th>0</th><th>0</th><th>0</th><th>1</th><th>3</th><th>4</th><th>21</th><th>52</th><th>131</th><th>-</th>
+    <th> damaged </th><th>0</th><th>0</th><th>0</th><th>0</th><th>0</th><th>0</th><th>0</th><th>0</th><th></th><th>-</th>
   </tr>
   <tr>
-    <th> nodes </th><th>2.30</th><th>3.11</th><th>4.65</th><th>70.4</th><th>211</th><th>449</th><th>1891</th><th>5182</th><th>12279</th><th>-</th>
+    <th> nodes </th><th>1.10</th><th>1.19</th><th>1.20</th><th>1.40</th><th>1.82</th><th>2.92</th><th>9.40</th><th>97</th><th></th><th>-</th>
   </tr>
 </table>
 
