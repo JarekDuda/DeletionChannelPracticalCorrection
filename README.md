@@ -11,11 +11,10 @@ We create potentially huge tree of possible corrections. Each node corresponds t
 
 For deletion channel, different deletion patterns can lead to the same corrected sequence - such branches should be removed, what is achieved here by checking if given state hasn't been already spotted for given bit position.
 
-The statistical behavior of such random tree is well described by Pareto coefficient (c), saying that increasing twice the limit of the number of nodes, reduces the probability of failure approximately 2^c times. We could improve performance by using more resources (memory and time) as long as c>0. For BSC and BEC this coefficient can be found analytically and c = 0 corresponds to channel capacity there - it is the boundary where the tree of possible corrections starts growing exponentially. 
+The statistical behavior of such random tree is well described by Pareto coefficient (c), saying that increasing twice the limit of number of nodes, reduces the probability of failure approximately 2^c times. We could improve performance by using more resources (memory and time) as long as c>0. For BSC and BEC this coefficient can be found analytically and c = 0 corresponds to channel capacity there - it is the boundary where the tree of possible corrections starts growing exponentially. 
+It is argued that standard codebooks are not optimal for deletion channel, especially that they cannot work for p>1/2, while there is known (1-p)/9 universal lower rate bound ([survey article](http://www.eecs.harvard.edu/~michaelm/TALKS/DelSurvey.pdf)). So roughtly extrapolated c=0 positions should be seen as lower bounds for low deletion probabilities here - asymptotically achievable by presented method. For large deletion probability there are used codes with long sequences of the same value (0 or 1). However, in practical applications, deletions are rather low probable and appear alongside other types of damages like bit-flips, which would damage the block structure. In contrast, other types of errors can be easily added to the presented approach as just different types of branches with corresponding probabilities.
 
-It is argued that standard codebooks are not optimal for deletion channel, especially that they cannot work for p>1/2, while there is known (1-p)/9 universal lower rate bound ([survey paper](http://www.eecs.harvard.edu/~michaelm/TALKS/DelSurvey.pdf)). So roughtly extrapolated c=0 positions should be rather seen as lower bounds for low deletion probabilities here. For large deletion probability there are used codes with long sequences of the same value (0 or 1). However, in practical applications, deletions are rather low probable and appear alongside other types of damages like bit-flips, which would damage the block structure. In contrast, other types of errors can be easily added to the presented approach as just different types of branches with corresponding probabilities.
-
-The tests for R=1, 4, 6, 7 (rate = 7/8, 1/2, 1/4, 1/8) were made for length 1000 byte encoded sequences (frames), with 5*10^7 node limit. 1000 frames were tested for each case. "damaged" is the number of improperly corrected frames out of 1000. "nodes" is the average number of created tree nodes per encoded byte - linear coefficient for time and memory cost (1 if error-free). Pareto coefficient (c) was estimated by linear fit to the central data ([1/3,2/3]). The last column contains roughtly extrapolated c=0 probability:
+The tests for R=1, 4, 6, 7 (rate = 7/8, 1/2, 1/4, 1/8) were made for length 1000 byte encoded sequences (frames), with 5*10^7 node limit. 1000 frames were tested for each case. "damaged" is the number of improperly corrected frames out of 1000. "nodes" is the average number of created tree nodes per encoded byte - linear coefficient for time and memory cost (1 if error-free). Pareto coefficient (c) was estimated by linear fit to the central data ([1/3,2/3]). The last column contains roughtly extrapolated c=0 probability ([test result files](https://dl.dropboxusercontent.com/u/12405967/delchan.zip)):
 
 <table>
   <tr>
@@ -28,7 +27,7 @@ The tests for R=1, 4, 6, 7 (rate = 7/8, 1/2, 1/4, 1/8) were made for length 1000
     <th> damaged </th><th>0</th><th>0</th><th>1</th><th>32</th><th>128</th><th>425</th><th>595</th><th>753</th><th>882</th><th>-</th>
   </tr>
   <tr>
-    <th> nodes </th><th>1.23</th><th>10.5</th><th>235</th><th>2355</th><th>9602</th><th>25099</th><th>33823</th><th>40992</th><th>46054</th><th>-</th>
+    <th> nodes </th><th>1.23</th><th>10.5</th><th>235</th><th>2355</th><th>9602</th><th>25k</th><th>34k</th><th>41k</th><th>46k</th><th>-</th>
   </tr>
   <tr>
    <th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th>
@@ -37,13 +36,13 @@ The tests for R=1, 4, 6, 7 (rate = 7/8, 1/2, 1/4, 1/8) were made for length 1000
     <th>rate 1/2</th><th>p=0.01</th><th>0.02</th><th>0.03</th><th>0.04</th><th>0.05</th><th>0.06</th><th>0.07</th><th>0.08</th><th>0.09</th><th>~0.1</th>
   </tr>
   <tr>
-    <th> c </th><th>71</th><th>22</th><th>7.9</th><th>3.3</th><th>1.46</th><th>0.74</th><th>0.398</th><th>0.241</th><th></th><th>0</th>
+    <th> c </th><th>71</th><th>22</th><th>7.9</th><th>3.3</th><th>1.46</th><th>0.74</th><th>0.398</th><th>0.241</th><th>0.076</th><th>0</th>
   </tr>
   <tr>
-    <th> damaged </th><th>0</th><th>0</th><th>0</th><th>0</th><th>0</th><th>1</th><th>22</th><th>170</th><th></th><th>-</th>
+    <th> damaged </th><th>0</th><th>0</th><th>0</th><th>0</th><th>0</th><th>1</th><th>22</th><th>170</th><th>651</th><th>-</th>
   </tr>
   <tr>
-    <th> nodes </th><th>1.03</th><th>1.11</th><th>1.35</th><th>2.22</th><th>9.01</th><th>156</th><th>2093</th><th>12696</th><th></th><th></th>
+    <th> nodes </th><th>1.03</th><th>1.11</th><th>1.35</th><th>2.22</th><th>9.01</th><th>156</th><th>2093</th><th>13k</th><th>37k</th><th></th>
   </tr>
   <tr>
     <th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th>
@@ -58,29 +57,29 @@ The tests for R=1, 4, 6, 7 (rate = 7/8, 1/2, 1/4, 1/8) were made for length 1000
     <th> damaged </th><th>0</th><th>0</th><th>0</th><th>0</th><th>0</th><th>7</th><th>35</th><th>125</th><th>446</th><th>-</th>
   </tr>
   <tr>
-    <th> nodes </th><th>1.54</th><th>2.80</th><th>4.88</th><th>11.7</th><th>84.7</th><th>746</th><th>2818</th><th>9996</th><th>27516</th><th>-</th>
+    <th> nodes </th><th>1.54</th><th>2.80</th><th>4.88</th><th>11.7</th><th>84.7</th><th>746</th><th>2818</th><th>9996</th><th>28k</th><th>-</th>
   </tr>
   <tr>
    <th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th>
   </tr>
    <tr>
-    <th>rate 1/8</th><th>p=0.1</th><th>0.12</th><th>0.14</th><th>0.16</th><th>0.18</th><th>0.20</th><th>0.22</th><th>0.24</th><th>0.25</th><th>~0.29</th>
+    <th>rate 1/8</th><th>0.12</th><th>0.14</th><th>0.16</th><th>0.18</th><th>0.20</th><th>0.22</th><th>0.24</th><th>0.25</th><th>0.26</th><th>~0.29</th>
   </tr>
   <tr>
-    <th> c </th><th>35.8</th><th>23.7</th><th>15.7</th><th>8.70</th><th>5.51</th><th>3.26</th><th>1.77</th><th>0.877</th>
-    <th>0.611</th><th>0</th>
+    <th> c </th><th>23.7</th><th>15.7</th><th>8.70</th><th>5.51</th><th>3.26</th><th>1.77</th><th>0.877</th>
+    <th>0.611</th><th>0.377</th><th>0</th>
   </tr>
   <tr>
-    <th> damaged </th><th>0</th><th>0</th><th>0</th><th>0</th><th>0</th><th>0</th><th>0</th><th>0</th><th>7</th><th>-</th>
+    <th> damaged </th><th>0</th><th>0</th><th>0</th><th>0</th><th>0</th><th>0</th><th>0</th><th>7</th><th>48</th><th>-</th>
   </tr>
   <tr>
-    <th> nodes </th><th>1.10</th><th>1.19</th><th>1.20</th><th>1.40</th><th>1.82</th><th>2.92</th><th>9.40</th><th>97</th><th>911</th><th>-</th>
+    <th> nodes </th><th>1.19</th><th>1.20</th><th>1.40</th><th>1.82</th><th>2.92</th><th>9.40</th><th>97</th><th>911</th><th>4407</th><th>-</th>
   </tr>
 </table>
 
 Estimated c=0 positions are close to known theoretical capacity bounds ([some recent article](http://arxiv.org/pdf/1211.2497v1.pdf)) and resemble values for BSC, which for these rates are correspondingly: 0.0171, 0.110, 0.214 and 0.295 bitflip probability. Comparing to other implementations, [here is some LDPC-based 2003 article](http://www.eecs.harvard.edu/~chaki/doc/code-long.pdf) which e.g. breaks for p~0.07-0.08 for rate 0.2333 code (page 8), while presented implementation still works above it for rate 1/2 - allowing to transmit more than twice more information through the same channel.
 
-As this implementation uses the last state for final verification, sending this last state (protected) means that the rates should be reduced by a tiny factor, which decreases proportionally to frame length (Pareto coefficient does not depend on it). Without using this state, the last part of the message may remain damaged. Having this state, we can add bidirectional correction: simultaneously build tree in backward direction and finally merge both of them. This way we need two critical error concentrations to essentially stop the correction process, making that probability of failure is approximately squared (Pareto coefficient is doubled), what is confirmed by results for BSC. 
+As this implementation uses the last state for final verification, sending this last state (protected) means that the rates should be reduced by a tiny factor, which decreases proportionally to frame length (Pareto coefficient does not depend on it). Without using this state, the last part of the message may remain damaged. Having this state, we can add bidirectional correction: simultaneously build tree in backward direction and finally merge both of them. This way there are needed two critical error concentrations to essentially cripple the correction process, making that probability of failure is approximately squared (Pareto coefficient is doubled), what is confirmed by results for BSC. 
 
 Another further work is trying different codewords (especially for large deletion probabilities) - the current coding was designed for bit-flips. Also, we can try to analytically find Pareto coefficients here – the difficulty in comparison to BSC is cutting branches (deletion patterns) corresponding to the same correction.
 
