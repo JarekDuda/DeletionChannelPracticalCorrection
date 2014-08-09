@@ -14,7 +14,7 @@
 using namespace std;
 typedef unsigned char byte;
 
-const short R=7, Rc = 8-R, Rcp = 1 << Rc;           // R is the number of redundancy bits per byte (rate = Rc/8)
+const short R=7, Rc = 8-R, Rcp = 1 << (Rc + (R==7));        // R is the number of redundancy bits per byte (rate = Rc/8)
 const uint64_t rmask = (1<<R)-1, xmask = (1<<Rc)-1; 
 const uint64_t INITSTATE = 0;                       // initial state for the coding
 const int STEP_LIMIT = 5E7;                         // the main tree will use STEP_LIMIT * 23 bytes
