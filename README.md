@@ -19,7 +19,7 @@ The tests for R=1, 4, 6, 7 (rate = 7/8, 1/2, 1/4, 1/8) were made for length 1000
 
 <table>
   <tr>
-    <th>rate 7/8</th><th>p=0.001</th><th>0.003</th><th>0.005</th><th>0.007</th><th>0.009</th><th>0.011</th><th>0.012</th><th>0.013</th><th>0.014</th><th>~0.015</th>
+    <th>rate 7/8</th><th>p=0.001</th><th>0.003</th><th>0.005</th><th>0.007</th><th>0.009</th><th>0.011</th><th>0.012</th><th>0.013</th><th>0.014</th><th>~0.016</th>
   </tr>
   <tr>
     <th> c </th><th>8.85</th><th>1.54</th><th>0.65</th><th>0.346</th><th>0.245</th><th>0.138</th><th>0.114</th><th>0.071</th><th>0.030</th><th>0</th>
@@ -64,21 +64,21 @@ The tests for R=1, 4, 6, 7 (rate = 7/8, 1/2, 1/4, 1/8) were made for length 1000
    <th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th>
   </tr>
    <tr>
-    <th>rate 1/8</th><th>p=0.1</th><th>0.12</th><th>0.14</th><th>0.16</th><th>0.18</th><th>0.20</th><th>0.22</th><th>0.24</th><th>0.26</th><th>?</th>
+    <th>rate 1/8</th><th>p=0.1</th><th>0.12</th><th>0.14</th><th>0.16</th><th>0.18</th><th>0.20</th><th>0.22</th><th>0.24</th><th>0.25</th><th>~0.29</th>
   </tr>
   <tr>
-    <th> c </th><th>35.8</th><th>23.7</th><th>15.7</th><th>8.70</th><th>5.51</th><th>3.26</th><th>1.77</th><th>0.87</th>
-    <th></th><th>0</th>
+    <th> c </th><th>35.8</th><th>23.7</th><th>15.7</th><th>8.70</th><th>5.51</th><th>3.26</th><th>1.77</th><th>0.877</th>
+    <th>0.611</th><th>0</th>
   </tr>
   <tr>
-    <th> damaged </th><th>0</th><th>0</th><th>0</th><th>0</th><th>0</th><th>0</th><th>0</th><th>0</th><th></th><th>-</th>
+    <th> damaged </th><th>0</th><th>0</th><th>0</th><th>0</th><th>0</th><th>0</th><th>0</th><th>0</th><th>7</th><th>-</th>
   </tr>
   <tr>
-    <th> nodes </th><th>1.10</th><th>1.19</th><th>1.20</th><th>1.40</th><th>1.82</th><th>2.92</th><th>9.40</th><th>97</th><th></th><th>-</th>
+    <th> nodes </th><th>1.10</th><th>1.19</th><th>1.20</th><th>1.40</th><th>1.82</th><th>2.92</th><th>9.40</th><th>97</th><th>911</th><th>-</th>
   </tr>
 </table>
 
-Estimated c=0 positions are close to known theoretical capacity bounds ([some recent article](http://arxiv.org/pdf/1211.2497v1.pdf). Comparing to other implementations, [here is some LDPC-based 2003 article](http://www.eecs.harvard.edu/~chaki/doc/code-long.pdf) which e.g. breaks for p~0.07-0.08 for rate 0.2333 code (page 8), while presented implementation still works above it for rate 1/2 - allowing to transmit more than twice more information through the same channel.
+Estimated c=0 positions are close to known theoretical capacity bounds ([some recent article](http://arxiv.org/pdf/1211.2497v1.pdf)) and resemble values for BSC, which for these rates are correspondingly: 0.0171, 0.110, 0.214 and 0.295 bitflip probability. Comparing to other implementations, [here is some LDPC-based 2003 article](http://www.eecs.harvard.edu/~chaki/doc/code-long.pdf) which e.g. breaks for p~0.07-0.08 for rate 0.2333 code (page 8), while presented implementation still works above it for rate 1/2 - allowing to transmit more than twice more information through the same channel.
 
 As this implementation uses the last state for final verification, sending this last state (protected) means that the rates should be reduced by a tiny factor, which decreases proportionally to frame length (Pareto coefficient does not depend on it). Without using this state, the last part of the message may remain damaged. Having this state, we can add bidirectional correction: simultaneously build tree in backward direction and finally merge both of them. This way we need two critical error concentrations to essentially stop the correction process, making that probability of failure is approximately squared (Pareto coefficient is doubled), what is confirmed by results for BSC. 
 
