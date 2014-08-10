@@ -7,11 +7,12 @@ While we understand well information channels like [binary symmetric channel](ht
 
 This implementation uses large state (64 bit) analogue of sequential decoding (forward only), what required replacing convolutional codes with specially designed code. The same encoding was previously used for BSC - implementation, discussion, analytically finding Pareto coefficients for BSC and BEC [can be found here](https://indect-project.eu/correction-trees/). To get some intuitions, [here is interactive simulator for BSC](http://demonstrations.wolfram.com/CorrectionTrees/).
 
-We create potentially huge tree of possible corrections. Each node corresponds to decoded sequence of bytes up to this point. Its branches correspond to the choice of the next decoded byte and the number of bits used for this purpose: 8 without correction or a smaller number when we test scenarios with some applied deletion. In each node there is tested uniformly distributed checksum: R redundancy bits out of 8 bits (rate is (8-R)/8 for R=1 .. 7). These bits always agree for the proper correction and disagree with 1-2^-R probability for improper ones, allowing to statistically reduce the growth of the tree. After detecting an error, the most probable looking node is chosen for further expansion (heap). 
+We create potentially huge tree of possible corrections. Each node corresponds to corrected sequence of bytes up to given point. Its branches correspond to the choice of the next corrected byte and the number of bits used for this purpose: 8 without correction or a smaller number when we test scenarios with some applied deletion. In each node there is tested uniformly distributed checksum: R redundancy bits out of 8 bits (rate is (8-R)/8 for R=1 .. 7). These bits always agree for the proper correction and disagree with 1-2^-R probability for improper ones, allowing to statistically reduce the growth of the tree. After detecting an error, the most probable looking node is chosen for further expansion (heap). 
 
 For deletion channel, different deletion patterns can lead to the same corrected sequence - such branches should be removed, what is achieved here by checking if given state hasn't been already spotted for given bit position.
 
-The statistical behavior of such random tree is well described by Pareto coefficient (c), saying that increasing twice the limit of number of nodes, reduces the probability of failure approximately 2^c times. We could improve performance by using more resources (memory and time) as long as c>0. For BSC and BEC this coefficient can be found analytically and c = 0 corresponds to channel capacity there - it is the boundary where the tree of possible corrections starts growing exponentially. 
+The statistical behavior of such random tree can be described by Pareto coefficient (c), saying that increasing twice the limit of number of nodes, reduces the probability of failure approximately 2^c times. We could improve performance by using more resources (memory and time) as long as c>0. For BSC and BEC this coefficient can be found analytically and c = 0 corresponds to channel capacity there - it is the boundary where the tree of possible corrections starts growing exponentially.
+
 It is argued that standard codebooks are not optimal for deletion channel, especially that they cannot work for p>1/2, while there is known (1-p)/9 universal lower rate bound ([survey article](http://www.eecs.harvard.edu/~michaelm/TALKS/DelSurvey.pdf)). So roughtly extrapolated c=0 positions should be seen as lower bounds for low deletion probabilities here - asymptotically achievable by presented method. For large deletion probability there are used codes with long sequences of the same value (0 or 1). However, in practical applications, deletions are rather low probable and appear alongside other types of damages like bit-flips, which would damage the block structure. In contrast, other types of errors can be easily added to the presented approach as just different types of branches with corresponding probabilities.
 
 The tests for R=1, 4, 6, 7 (rate = 7/8, 1/2, 1/4, 1/8) were made for length 1000 byte encoded sequences (frames), with 5*10^7 node limit. 1000 frames were tested for each case. "damaged" is the number of improperly corrected frames out of 1000. "nodes" is the average number of created tree nodes per encoded byte - linear coefficient for time and memory cost (1 if error-free). Pareto coefficient (c) was estimated by linear fit to the central data ([1/3,2/3]). The last column contains roughtly extrapolated c=0 probability ([test result files](https://dl.dropboxusercontent.com/u/12405967/delchan.zip)):
@@ -63,17 +64,17 @@ The tests for R=1, 4, 6, 7 (rate = 7/8, 1/2, 1/4, 1/8) were made for length 1000
    <th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th>
   </tr>
    <tr>
-    <th>rate 1/8</th><th>0.12</th><th>0.14</th><th>0.16</th><th>0.18</th><th>0.20</th><th>0.22</th><th>0.24</th><th>0.25</th><th>0.26</th><th>~0.29</th>
+    <th>rate 1/8</th><th>0.16</th><th>0.18</th><th>0.20</th><th>0.22</th><th>0.24</th><th>0.25</th><th>0.26</th><th>0.27</th><th>0.28</th><th>~0.29</th>
   </tr>
   <tr>
-    <th> c </th><th>23.7</th><th>15.7</th><th>8.70</th><th>5.51</th><th>3.26</th><th>1.77</th><th>0.877</th>
-    <th>0.611</th><th>0.377</th><th>0</th>
+    <th> c </th><th>8.70</th><th>5.51</th><th>3.26</th><th>1.77</th><th>0.877</th>
+    <th>0.611</th><th>0.377</th><th>0.245</th><th>0.098</th><th>0</th>
   </tr>
   <tr>
-    <th> damaged </th><th>0</th><th>0</th><th>0</th><th>0</th><th>0</th><th>0</th><th>0</th><th>7</th><th>48</th><th>-</th>
+    <th> damaged </th><th>0</th><th>0</th><th>0</th><th>0</th><th>0</th><th>7</th><th>48</th><th>228</th><th>623</th><th>-</th>
   </tr>
   <tr>
-    <th> nodes </th><th>1.19</th><th>1.20</th><th>1.40</th><th>1.82</th><th>2.92</th><th>9.40</th><th>97</th><th>911</th><th>4407</th><th>-</th>
+    <th> nodes </th><th>1.40</th><th>1.82</th><th>2.92</th><th>9.40</th><th>97</th><th>911</th><th>4407</th><th>16k</th><th>36k</th><th>-</th>
   </tr>
 </table>
 
